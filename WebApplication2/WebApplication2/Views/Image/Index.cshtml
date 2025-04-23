@@ -1,26 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "圖片 Resize";
+    ViewData["Title"] = "首頁";
 }
 
-<h2>圖片 Resize</h2>
+<h2>上傳圖片進行分類</h2>
 
-<form asp-controller="Image" asp-action="Resize" method="post" enctype="multipart/form-data">
-    <div>
-        <label>選擇圖片：</label>
-        <input type="file" name="imageFile" accept="image/*" required />
-    </div>
-    <div>
-        <label>寬度：</label>
-        <input type="number" name="width" required />
-    </div>
-    <div>
-        <label>高度：</label>
-        <input type="number" name="height" required />
-    </div>
-    <button type="submit">Resize</button>
+<form asp-controller="Home" asp-action="Predict" method="post" enctype="multipart/form-data">
+    <input type="file" name="imageFile" accept="image/*" required />
+    <button type="submit">開始預測</button>
 </form>
-
-@if (ViewBag.Error != null)
-{
-    <p style="color:red;">@ViewBag.Error</p>
-}

@@ -2,11 +2,19 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using WebApplication2.Service;
 
 namespace WebApplication2.Controllers
 {
     public class ImageController : Controller
     {
+
+        private readonly ResNetApiService _resNetApiService;
+
+        public ImageController(ResNetApiService resNetApiService)
+        {
+            _resNetApiService = resNetApiService;
+        }
         [HttpGet]
         public IActionResult Resize()
         {
@@ -18,6 +26,20 @@ namespace WebApplication2.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Result()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> ResizeAsync(IFormFile imageFile, int width, int height)
         {
@@ -77,6 +99,19 @@ namespace WebApplication2.Controllers
 
             ViewBag.OriginalImage = Convert.ToBase64String(originalBytes);
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Predict(IFormFile imageFile)
+        {
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                ModelState.AddModelError("", "請選擇一張圖片");
+                return View("Index");
+            }
+
+            var result = await _resNetApiService.SendImageForPredictionAsync(imageFile);
+            ViewBag.Result = result;
+            return View("Result");
         }
 
 
