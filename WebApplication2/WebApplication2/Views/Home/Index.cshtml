@@ -1,0 +1,21 @@
+﻿
+
+
+@model List<WebApplication2.Models.Comment>
+
+<div class="container mt-5">
+    <h2 class="mb-4">留言板</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">我要留言</a>
+
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">
+                <strong>@item.AuthorName</strong><br />
+                <span>@item.Content</span>
+                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger float-end">刪除</a>
+            </li>
+        }
+    </ul>
+</div>
+

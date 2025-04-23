@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "圖片縮放";
+    var originalBase64 = ViewBag.OriginalImage as string;
+    var resizedBase64 = ViewBag.ResizedImage as string;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <label>圖片：</label>
+    <input type="file" name="imageFile" id="imageFile" onchange="previewImage(event)" />
+    <br />
+
+    <label>寬度：</label>
+    <input type="number" name="width" value="300" />
+    <label>高度：</label>
+    <input type="number" name="height" value="300" />
+    <br />
+
+    <img id="preview" style="max-width: 300px; margin-top: 10px;"
+         src="@(originalBase64 != null ? $"data:image/jpeg;base64,{originalBase64}" : "")" />
+    <br />
+
+    <button type="submit">Resize</button>
+</form>
+
+<hr />
+
+@if (!string.IsNullOrEmpty(resizedBase64))
+{
+    <h3>縮放後圖片：</h3>
+    <img src="data:image/jpeg;base64,@resizedBase64" style="max-width: 300px;" />
+    <br />
+    <a href="data:image/jpeg;base64,@resizedBase64" download="resized.jpg" class="btn btn-primary mt-2">下載縮放圖</a>
+}
+
+@if (ViewBag.Error != null)
+{
+    <p style="color:red">@ViewBag.Error</p>
+}
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('preview');
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}

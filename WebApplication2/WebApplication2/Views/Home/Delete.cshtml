@@ -1,0 +1,17 @@
+﻿@model WebApplication2.Models.Comment
+
+<div class="container mt-5">
+    <h2>確定要刪除這則留言嗎？</h2>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">@Model.AuthorName</h5>
+            <p class="card-text">@Model.Content</p>
+        </div>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="ID" />
+        <button type="submit" class="btn btn-danger mt-3">確定刪除</button>
+        <a asp-action="Index" class="btn btn-secondary mt-3">取消</a>
+    </form>
+</div>

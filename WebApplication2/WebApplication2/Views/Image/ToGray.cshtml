@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "轉換為灰階圖片";
+    var originalBase64 = ViewBag.OriginalImage as string;
+    var grayBase64 = ViewBag.ImageBytes as string;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="imageFile" id="imageFile" onchange="previewImage(event)" />
+    <br />
+    <img id="preview" style="max-width: 300px; margin-top: 10px;"
+         src="@(originalBase64 != null ? $"data:image/jpeg;base64,{originalBase64}" : "")" />
+    <br />
+    <button type="submit">轉換</button>
+</form>
+
+<hr />
+
+@if (!string.IsNullOrEmpty(grayBase64))
+{
+    <h3>灰階圖片：</h3>
+    <img src="data:image/jpeg;base64,@grayBase64" style="max-width: 300px;" />
+    <br />
+    <a href="data:image/jpeg;base64,@grayBase64" download="gray_image.jpg" class="btn btn-primary mt-2">下載灰階圖</a>
+}
+
+@if (ViewBag.Error != null)
+{
+    <p style="color:red">@ViewBag.Error</p>
+}
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('preview');
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}
