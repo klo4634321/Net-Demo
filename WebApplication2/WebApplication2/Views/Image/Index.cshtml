@@ -4,7 +4,7 @@
 
 <h2>上傳圖片進行分類</h2>
 
-<form asp-controller="Home" asp-action="Predict" method="post" enctype="multipart/form-data">
+<form asp-controller="Image" asp-action="Predict" method="post" enctype="multipart/form-data">
     <input type="file" name="imageFile" accept="image/*" required />
     <button type="submit">開始預測</button>
 </form>

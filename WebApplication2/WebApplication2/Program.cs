@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Models;
+using WebApplication2.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// 若 ResNetApiService 有用到 HttpClient，使用這個方式註冊
+builder.Services.AddHttpClient<ResNetApiService>();
+
 
 var app = builder.Build();
 

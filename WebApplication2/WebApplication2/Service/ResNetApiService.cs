@@ -8,11 +8,12 @@ namespace WebApplication2.Service
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl;
 
-        public ResNetApiService(HttpClient httpClient, string apiUrl)
+        // 構造函數，從 IConfiguration 讀取設定
+        public ResNetApiService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _apiUrl = apiUrl;
-            _httpClient.BaseAddress = new Uri("http://localhost:8000"); // FastAPI server URL
+            _apiUrl = configuration["ResNetApi:Url"]; // 讀取設定檔中的 API URL
+            _httpClient.BaseAddress = new Uri(_apiUrl); // 設置 HttpClient 的 BaseAddress
         }
 
         public async Task<string> SendImageForPredictionAsync(IFormFile imageFile)
@@ -24,11 +25,10 @@ namespace WebApplication2.Service
 
             content.Add(streamContent, "file", imageFile.FileName);
 
-            var response = await _httpClient.PostAsync("/predict", content);
+            var response = await _httpClient.PostAsync("/predict", content); // 使用相對路徑 "/predict"
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsStringAsync();
         }
     }
-
 }
