@@ -1,21 +1,32 @@
-﻿
-
-
-@model List<WebApplication2.Models.Comment>
+﻿@model List<WebApplication2.Models.Comment>
 
 <div class="container mt-5">
     <h2 class="mb-4">留言板</h2>
     <a asp-action="Create" class="btn btn-primary mb-3">我要留言</a>
 
-    <ul class="list-group">
+    <form method="get" asp-action="Index" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="keyword" value="@ViewBag.Keyword" class="form-control" placeholder="搜尋留言內容或作者名稱..." />
+            <button type="submit" class="btn btn-primary">搜尋</button>
+        </div>
+    </form>
+
+    @if (!Model.Any())
+    {
+        <p>😢 查無留言結果。</p>
+    }
+    else
+    {
         @foreach (var item in Model)
         {
-            <li class="list-group-item">
-                <strong>@item.AuthorName</strong><br />
-                <span>@item.Content</span>
-                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger float-end">刪除</a>
-            </li>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">@item.AuthorName</h5>
+                    <p class="card-text">@item.Content</p>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger float-end">刪除</a>
+                </div>
+            </div>
         }
-    </ul>
+    }
 </div>
 

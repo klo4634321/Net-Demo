@@ -15,9 +15,17 @@ namespace WebApplication2.Controllers
             _databaseContext = databaseContext;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string keyword)
         {
-            var comments = _databaseContext.Comment.OrderByDescending(c => c.ID).ToList();
+            var query = _databaseContext.Comment.AsQueryable();
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(c => c.AuthorName.Contains(keyword) || c.Content.Contains(keyword));
+            }
+
+            var comments = query.OrderByDescending(c => c.ID).ToList();
+            ViewBag.Keyword = keyword;  // 傳回 View 顯示目前關鍵字
             return View(comments);
         }
 

@@ -3,7 +3,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Jpeg;
 
-namespace WebApplication1.Controllers
+namespace WebApplication2.Controllers
 {
     public class ImageController : Controller
     {
@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Resize(IFormFile imageFile, int width, int height)
+        public async Task<IActionResult> ResizeAsync(IFormFile imageFile, int width, int height)
         {
             if (imageFile == null || imageFile.Length == 0)
             {
