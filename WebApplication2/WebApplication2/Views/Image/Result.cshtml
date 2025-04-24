@@ -1,10 +1,11 @@
-﻿@{
-    ViewData["Title"] = "預測結果";
-}
+﻿@model WebApplication2.Models.PredictionResult
 
 <h2>預測結果</h2>
-<pre>
-    @ViewBag.Result
-</pre>
+
+<div>
+    <p><strong>預測類別：</strong>@Model.ClassName</p>
+    <p><strong>信心指數：</strong>@Model.Confidence%</p>
+</div>
+
 
 <a href="/">回到首頁</a>

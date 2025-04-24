@@ -108,10 +108,15 @@ namespace WebApplication2.Controllers
                 ModelState.AddModelError("", "請選擇一張圖片");
                 return View("Index");
             }
+            using var memoryStream = new MemoryStream();
+            await imageFile.CopyToAsync(memoryStream);
+            var imageBytes = memoryStream.ToArray();
+            string base64Image = Convert.ToBase64String(imageBytes);
+            ViewBag.OriginalImage = base64Image;
 
             var result = await _resNetApiService.SendImageForPredictionAsync(imageFile);
             ViewBag.Result = result;
-            return View("Result");
+            return View("Result",result);
         }
 
 

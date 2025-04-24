@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using WebApplication2.Models;
 
 namespace WebApplication2.Service
 {
@@ -16,7 +17,7 @@ namespace WebApplication2.Service
             _httpClient.BaseAddress = new Uri(_apiUrl); // 設置 HttpClient 的 BaseAddress
         }
 
-        public async Task<string> SendImageForPredictionAsync(IFormFile imageFile)
+        public async Task<PredictionResult> SendImageForPredictionAsync(IFormFile imageFile)
         {
             using var content = new MultipartFormDataContent();
             using var stream = imageFile.OpenReadStream();
@@ -28,7 +29,10 @@ namespace WebApplication2.Service
             var response = await _httpClient.PostAsync("/predict", content); // 使用相對路徑 "/predict"
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsStringAsync();
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var predictionResult = JsonConvert.DeserializeObject<PredictionResult>(jsonResponse); // 解析 JSON 字串
+
+            return predictionResult;
         }
     }
 }

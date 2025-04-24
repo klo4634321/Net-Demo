@@ -1,10 +1,28 @@
 ﻿@{
-    ViewData["Title"] = "首頁";
+    ViewData["Title"] = "Resnet";
+    var originalBase64 = ViewBag.OriginalImage as string;
 }
 
 <h2>上傳圖片進行分類</h2>
 
 <form asp-controller="Image" asp-action="Predict" method="post" enctype="multipart/form-data">
-    <input type="file" name="imageFile" accept="image/*" required />
+    <input type="file" name="imageFile" accept="image/*" required onchange="previewImage(event)" />
+    <br />
+    <img id="preview" style="max-width: 300px; margin-top: 10px;"
+         src="@(originalBase64 != null ? $"data:image/jpeg;base64,{originalBase64}" : "")" />
+    <br />
     <button type="submit">開始預測</button>
 </form>
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}
